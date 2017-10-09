@@ -1,7 +1,4 @@
 FROM node:6
-ENV SECRET ""
-ENV JENKINS_HOST "http://localhost:8080"
-ENV SLAVE_NAME "slave"
 ENV JDK "jdk-8u131-linux-x64"
 ENV REMOTING_VERSION "3.9"
 
