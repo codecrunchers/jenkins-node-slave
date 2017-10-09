@@ -1,5 +1,5 @@
 # jenkins-node-slave
-Node Build Slave for Jenkins over jnlp
+Node Build Slave for Jenkins over jnlp. Provides node:6 tooling for building npm, javascript, grunt etc..
 
 ## Environment Vars
 * JENKINS_HOST 
