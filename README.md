@@ -7,7 +7,7 @@ Node Build Slave for Jenkins over jnlp. Provides node:6 tooling for building npm
 
 ## Run
 
-`docker run --env codecrunchers/jenkins-node-slave -headless "-url","http://jeknis_ip:8080","<sceret>","<slave_name>"`
+`docker run --env codecrunchers/jenkins-node-slave -headless "-url","http://jekins_ip:8080","<sceret>","<slave_name>"`
 
 
 ## Work Dir
