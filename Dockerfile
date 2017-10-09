@@ -25,7 +25,7 @@ RUN mkdir work && \
 
 
 USER node
-ENTRYPOINT ["/home/node/java/bin/java", "-cp", "/home/node/jenkins_agent/slave.jar", "hudson.remoting.jnlp.Main"]
+ENTRYPOINT ["/home/node/java/bin/java", "-cp", "/home/node/jenkins_agent/slave.jar", "hudson.remoting.jnlp.Main","-headless"]
 CMD ["--help"]
 #ENTRYPOINT ["/bin/sh"]
 

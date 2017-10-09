@@ -5,9 +5,13 @@ Node Build Slave for Jenkins over jnlp. Provides node:6 tooling for building npm
 * JDK which JDK to install from Oracle
 * REMOTING_VERSION for Jenkins slave JAR download
 
-## Ru
+## Run
 
-`docker run --env codecrunchers/jenkins-node-slave ["-url","http://jeknis_ip:8080","cee5fec7519379f67f77b03e0d036e151d596cc211e87279bc55c693a0756b92","ecs-8cc9807b0f4e"]
+`docker run --env codecrunchers/jenkins-node-slave -headless "-url","http://jeknis_ip:8080","<sceret>","<slave_name>"
 
 ## Work Dir
+
 Use `/home/node/work`
+
+## Works well with 
+[Jenkins Amazon ECS  amazon-ecs  plugin] (https://wiki.jenkins.io/display/JENKINS/Amazon+EC2+Container+Service+Plugin)
