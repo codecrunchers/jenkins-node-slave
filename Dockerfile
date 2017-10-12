@@ -1,6 +1,8 @@
 FROM node:6
 ENV JDK "jdk-8u131-linux-x64"
 ENV REMOTING_VERSION "3.9"
+ENV TERRAFORM_VERSION=0.9.11
+
 
 WORKDIR /home/node/
 
@@ -13,7 +15,12 @@ RUN apt -y update && \
         chmod 755 /home/node/java && \
         chown node /home/node/java -R && \
         tar xf /tmp/${JDK}.tar.gz -C java --strip-components 1 && \
-        rm /tmp/${JDK}.tar.gz
+        rm /tmp/${JDK}.tar.gz && \
+        apt-get install -y python python-dev python-pip unzip && \
+        pip install awscli && \
+        cd /tmp && wget -q https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
+        unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
+        cp terraform /usr/bin/terraform
 
 RUN mkdir work && \
         chmod 755 /home/node/work && \
