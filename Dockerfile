@@ -1,7 +1,12 @@
 FROM node:6
 ENV JDK "jdk-8u131-linux-x64"
 ENV REMOTING_VERSION "3.9"
-ENV TERRAFORM_VERSION=0.9.11
+ENV TERRAFORM_VERSION 0.9.11
+ENV SONAR_SCANNER_VERSION 2.8
+ENV SONAR_SCANNER_HOME /home/sonar-scanner-${SONAR_SCANNER_VERSION}
+ENV SONAR_SCANNER_PACKAGE sonar-scanner-${SONAR_SCANNER_VERSION}.zip
+ENV SONAR_RUNNER_HOME ${SONAR_SCANNER_HOME}
+
 
 
 WORKDIR /home/node/
@@ -16,11 +21,26 @@ RUN apt -y update && \
         chown node /home/node/java -R && \
         tar xf /tmp/${JDK}.tar.gz -C java --strip-components 1 && \
         rm /tmp/${JDK}.tar.gz && \
-        apt-get install -y python python-dev python-pip unzip && \
+        apt-get install -yqq --no-install-recommends python python-dev python-pip unzip bzip2 && \
         pip install awscli && \
+        npm install -g pac nexus-deployer && \
         cd /tmp && wget -q https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
         unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
-        cp terraform /usr/bin/terraform
+        cp terraform /usr/bin/terraform && \
+        npm install -g gulp bower && \
+        npm cache clean && \
+        apt-get -yqq autoremove && \
+        apt-get -yqq clean && \
+        rm -rf /var/lib/apt/lists/* /var/cache/* /tmp/* /var/tmp/*
+
+
+# Allow root for bower
+RUN echo '{ "allow_root": true }' > /root/.bowerrc
+
+RUN curl --insecure -OL https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/${SONAR_SCANNER_PACKAGE} && \
+      unzip ${SONAR_SCANNER_PACKAGE} -d /home && \
+      rm ${SONAR_SCANNER_PACKAGE}
+
 
 RUN mkdir work && \
         chmod 755 /home/node/work && \
@@ -30,7 +50,7 @@ RUN mkdir work && \
         chmod 644 /home/node/jenkins_agent/slave.jar && \
         chown node /home/node/jenkins_agent -R
 
-
+ENV PATH $PATH:${SONAR_SCANNER_HOME}/bin
 USER node
 ENTRYPOINT ["/home/node/java/bin/java", "-cp", "/home/node/jenkins_agent/slave.jar", "hudson.remoting.jnlp.Main","-headless"]
 CMD ["--help"]
