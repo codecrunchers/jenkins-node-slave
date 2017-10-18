@@ -20,8 +20,7 @@ RUN apt -y update && \
         pip install awscli && \
         cd /tmp && wget -q https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
         unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
-        cp terraform /usr/bin/terraform && \
-        npm install -g npm
+        cp terraform /usr/bin/terraform
 
 RUN mkdir work && \
         chmod 755 /home/node/work && \
@@ -33,6 +32,7 @@ RUN mkdir work && \
 
 
 USER node
+#for Sonar
 ENV JAVA_HOME=/home/node/java
 ENTRYPOINT ["/home/node/java/bin/java", "-cp", "/home/node/jenkins_agent/slave.jar", "hudson.remoting.jnlp.Main","-headless"]
 CMD ["--help"]
